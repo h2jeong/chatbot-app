@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.site-layout-content {
+  background: #fff;
+  padding: 24px;
+  min-height: calc(100vh - 194px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
