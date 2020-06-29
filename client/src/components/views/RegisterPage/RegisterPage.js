@@ -38,7 +38,8 @@ function RegisterPage(props) {
         message.success("Register succeed");
         props.history.push("/login");
       } else {
-        message.error("Register failed. ", res.payload.err);
+        message.error("Register failed. ");
+        console.log(res.payload.err);
       }
     });
   };

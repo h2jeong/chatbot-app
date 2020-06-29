@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, Input, Button, Checkbox, message } from "antd";
-// import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_action/user_action";
 
@@ -16,29 +15,20 @@ function LoginPage(props) {
   const dispatch = useDispatch();
 
   const onFinish = values => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
     dispatch(loginUser(values)).then(res => {
       if (res.payload.success) {
         message.success("Login Succeed");
-        console.log("userId:", res.payload.userId);
         props.history.push("/");
       } else {
-        message.error("Login Failed. ", res.payload.err);
+        message.error("Login Failed. ");
+        console.log(res.payload.err);
       }
     });
   };
 
-  const onFinishFailed = errorInfo => {
-    console.log("Failed:", errorInfo);
-  };
   return (
-    <Form
-      {...layout}
-      name="basic"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
+    <Form {...layout} name="basic" onFinish={onFinish}>
       <Form.Item
         label="Email"
         name="email"
@@ -62,10 +52,6 @@ function LoginPage(props) {
         rules={[{ required: true, message: "Please input your password!" }]}
       >
         <Input.Password />
-      </Form.Item>
-
-      <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
       </Form.Item>
 
       <Form.Item {...tailLayout}>
