@@ -53,14 +53,17 @@ router.post("/logout", auth, (req, res) => {
     (err, user) => {
       if (err) return res.status(400).json({ success: false, err });
       console.log("logout;", user);
-      return res.status(200).json({ success: true });
+      return res
+        .clearCookie("w_auth")
+        .status(200)
+        .json({ success: true });
     }
   );
 });
 
 router.get("/auth", auth, (req, res) => {
   console.log("auth:", req.body, req.user, req.token);
-  // req에 보내고 온거 확인 후 routes 처리
+  // req에 보내고 온거 확인 후 res에 담을 정보 처리
   return res.status(200).json({
     user: req.user,
     isAdmin: req.user.role === 0 ? false : true,

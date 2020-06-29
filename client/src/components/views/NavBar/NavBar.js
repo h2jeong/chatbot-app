@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Layout, Menu, message } from "antd";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../_action/user_action";
+import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import {
   HomeOutlined,
@@ -15,7 +17,9 @@ const { Header } = Layout;
 
 function NavBar() {
   const dispatch = useDispatch();
-  const [IsAuth, setIsAuth] = useState(false);
+  const auth = useSelector(state => state.auth);
+  console.log("NavBar:", auth);
+
   const onHandleLogout = () => {
     dispatch(logoutUser()).then(res => {
       console.log(res.payload);
@@ -28,7 +32,8 @@ function NavBar() {
       }
     });
   };
-  if (!IsAuth) {
+
+  if (!auth || !auth.isAuth) {
     return (
       <Header style={{ padding: "0 50px", background: "white" }}>
         <Menu mode="horizontal">
@@ -40,9 +45,6 @@ function NavBar() {
           </Menu.Item>
           <Menu.Item key="register" icon={<UserAddOutlined />}>
             <a href="/register">Register</a>
-          </Menu.Item>
-          <Menu.Item key="logout" icon={<LogoutOutlined />}>
-            <span onClick={onHandleLogout}>Log out</span>
           </Menu.Item>
         </Menu>
       </Header>
@@ -63,4 +65,4 @@ function NavBar() {
   }
 }
 
-export default NavBar;
+export default withRouter(NavBar);
