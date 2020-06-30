@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, message } from "antd";
+import { Menu, message } from "antd";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../_action/user_action";
 import { useSelector } from "react-redux";
@@ -8,59 +8,52 @@ import { withRouter } from "react-router-dom";
 import {
   HomeOutlined,
   UserAddOutlined,
-  LoginOutlined,
   LogoutOutlined,
   PoweroffOutlined
 } from "@ant-design/icons";
 
-const { Header } = Layout;
-
-function NavBar() {
+function NavBar(props) {
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth);
-  console.log("NavBar:", auth);
+  const user = useSelector(state => state.user);
+  console.log("NavBar:", user);
 
   const onHandleLogout = () => {
     dispatch(logoutUser()).then(res => {
       console.log(res.payload);
       if (res.payload.success) {
         message.success("Logout Succeed");
-        // props.history.push("/");
+        props.history.push("/login");
       } else {
         message.error("Logout Failed. ");
-        console.log(res.payload.message);
+        console.log(res.payload.err);
       }
     });
   };
 
-  if (!auth || !auth.isAuth) {
+  if (user.auth && !user.auth.isAuth) {
     return (
-      <Header style={{ padding: "0 50px", background: "white" }}>
-        <Menu mode="horizontal">
-          <Menu.Item key="home" icon={<HomeOutlined />}>
-            <a href="/">Home</a>
-          </Menu.Item>
-          <Menu.Item key="login" icon={<PoweroffOutlined />}>
-            <a href="/login">Log In</a>
-          </Menu.Item>
-          <Menu.Item key="register" icon={<UserAddOutlined />}>
-            <a href="/register">Register</a>
-          </Menu.Item>
-        </Menu>
-      </Header>
+      <Menu mode="horizontal">
+        <Menu.Item key="home" icon={<HomeOutlined />}>
+          <a href="/">Home</a>
+        </Menu.Item>
+        <Menu.Item key="login" icon={<PoweroffOutlined />}>
+          <a href="/login">Log In</a>
+        </Menu.Item>
+        <Menu.Item key="register" icon={<UserAddOutlined />}>
+          <a href="/register">Register</a>
+        </Menu.Item>
+      </Menu>
     );
   } else {
     return (
-      <Header style={{ padding: 0 }}>
-        <Menu mode="horizontal" selectedKeys={["home"]}>
-          <Menu.Item key="home" icon={<HomeOutlined />}>
-            <a href="/">Home</a>
-          </Menu.Item>
-          <Menu.Item key="logout" icon={<LogoutOutlined />}>
-            <span onClick={onHandleLogout}>Log out</span>
-          </Menu.Item>
-        </Menu>
-      </Header>
+      <Menu mode="horizontal" selectedKeys={["home"]}>
+        <Menu.Item key="home" icon={<HomeOutlined />}>
+          <a href="/">Home</a>
+        </Menu.Item>
+        <Menu.Item key="logout" icon={<LogoutOutlined />}>
+          <span onClick={onHandleLogout}>Log out</span>
+        </Menu.Item>
+      </Menu>
     );
   }
 }

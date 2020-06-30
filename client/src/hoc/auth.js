@@ -1,5 +1,7 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { authUser } from "../_action/user_action";
 
 export default function(WrappedComponent, option, adminRoute = null) {
   const dispatch = useDispatch();
@@ -13,21 +15,29 @@ export default function(WrappedComponent, option, adminRoute = null) {
     //     isAuth: true
     //   }
     useEffect(() => {
-      dispatch(authUser()).then(res => {
-        console.log("res.payload:", res.payload);
-        if (option) {
+      dispatch(authUser())
+        .then(res => {
+          // console.log("res.payload:", res.payload);
+          // 로그인 전
           if (!res.payload.isAuth) {
-            props.history.push("/login");
+            if (option) {
+              props.history.push("/login");
+            }
+            // 로그인 후
           } else {
-            if (adminRoute && !res.payload.isAdmin) {
+            if (option) {
+              if (adminRoute && !res.payload.isAdmin) {
+                props.history.push("/");
+              }
+            } else {
               props.history.push("/");
             }
           }
-        } else {
-          props.history.push("/");
-        }
-      });
-    }, []);
+        })
+        .catch(err => {
+          console.log("auth error:", err);
+        });
+    }, [props.history]);
 
     return <WrappedComponent {...props} />;
   }

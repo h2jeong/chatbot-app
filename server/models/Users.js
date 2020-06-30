@@ -13,20 +13,25 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.pre("save", function(next) {
-  const user = this;
-  // 비밀번호 암호화 하기 :
-  // 1. genrate a salt and hash on separate function calls
-  // 2. store hash in db
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    if (err) return next(err);
-    bcrypt.hash(user.password, salt, function(err, hash) {
-      if (err) return next(err);
-      user.password = hash;
-      next();
-    });
-  });
+  // 몽구스 미들웨어(pre, post) - pre는 next를 인자로 사용
+  // 새로 등록하거나 수정되었을 때만 only hash the password if it has been modified (or is new)
+  // Document.prototype.isModified() - Returns true if this document was modified, else false.
+  // 일부 속성이 수정되었는지 확인하려면 속성 이름을 isModified 함수에 매개 변수로 전달하십시오.
 
-  // next();
+  const user = this;
+  if (user.isModified("password")) {
+    // 비밀번호 암호화 하기 :
+    // 1. genrate a salt and hash on separate function calls
+    // 2. store hash in db
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+      if (err) return next(err);
+      bcrypt.hash(user.password, salt, function(err, hash) {
+        if (err) return next(err);
+        user.password = hash;
+        next();
+      });
+    });
+  } else next();
 });
 
 userSchema.methods.comparePassword = function(password, cb) {
@@ -54,12 +59,14 @@ userSchema.methods.generateToken = function(cb) {
 
 userSchema.statics.findByToken = function(token, cb) {
   jwt.verify(token, "privateKey", function(err, decoded) {
-    if (err) return cb(err);
+    // if (err) return cb(err);
 
-    User.findOne({ _id: decoded, token: token }, (err, user) => {
-      if (err) return cb(err);
-      cb(null, user);
-    });
+    // why? mongoose async(promise) thing..
+    User.findOne({ _id: decoded, token: token })
+      .then(user => {
+        cb(null, user);
+      })
+      .catch(err => cb(err));
   });
 };
 
