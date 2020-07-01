@@ -8,6 +8,8 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "dialogflow": "^1.2.0",
+    "dialogflow-fulfillment": "^0.5.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.20",
@@ -20,8 +22,8 @@
     "nodemon": "^2.0.4"
   },
   "scripts": {
-    "serve": "node server/index.js",
-    "backend": "nodemon server/index.js",
+    "serve": "node index.js",
+    "backend": "nodemon index.js",
     "frontend": "yarn --cwd ./client run start",
     "dev": "concurrently \"yarn run backend\" \"yarn run frontend\""
   }
