@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const dialogflow = require("dialogflow");
-const config = require("../config/dev");
+const config = require("../config/keys");
 
 const projectId = config.googleProjectID;
 const sessionId = config.dialogFlowSessionId;
-const langCode = config.dislogFlowSessionLanguageCode;
+const languageCode = config.dislogFlowSessionLanguageCode;
 
 // Create a new session
 const sessionClient = new dialogflow.SessionsClient();
@@ -22,7 +22,7 @@ router.post("/textQuery", async (req, res) => {
         // The query to send to the dialogflow agent
         text: req.body.text,
         // The language used by the client (en-US)
-        languageCode: langCode
+        languageCode: languageCode
       }
     }
   };
@@ -38,6 +38,8 @@ router.post("/textQuery", async (req, res) => {
   } else {
     console.log(`  No intent matched.`);
   }
+
+  res.send(result);
 });
 
 router.post("/eventQuery", async (req, res) => {
@@ -48,7 +50,7 @@ router.post("/eventQuery", async (req, res) => {
         // The query to send to the dialogflow agent
         name: req.body.event,
         // The language used by the client (en-US)
-        languageCode: langCode
+        languageCode: languageCode
       }
     }
   };
@@ -64,6 +66,8 @@ router.post("/eventQuery", async (req, res) => {
   } else {
     console.log(`  No intent matched.`);
   }
+
+  res.send(result);
 });
 
 module.exports = router;

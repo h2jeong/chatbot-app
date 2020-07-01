@@ -12,7 +12,7 @@ export default function(state = {}, action) {
     case LOGIN_USER:
       return { ...state, login: action.payload };
     case LOGOUT_USER:
-      return { ...state, logout: action.payload };
+      return { ...state };
     case AUTH_USER:
       return { ...state, auth: action.payload };
     default:

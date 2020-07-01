@@ -1,15 +1,15 @@
 import React from "react";
-import { Menu, message } from "antd";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../_action/user_action";
 import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
-
+import { Menu, message } from "antd";
 import {
   HomeOutlined,
   UserAddOutlined,
   LogoutOutlined,
-  PoweroffOutlined
+  PoweroffOutlined,
+  RobotOutlined
 } from "@ant-design/icons";
 
 function NavBar(props) {
@@ -19,7 +19,6 @@ function NavBar(props) {
 
   const onHandleLogout = () => {
     dispatch(logoutUser()).then(res => {
-      console.log(res.payload);
       if (res.payload.success) {
         message.success("Logout Succeed");
         props.history.push("/login");
@@ -41,6 +40,9 @@ function NavBar(props) {
         </Menu.Item>
         <Menu.Item key="register" icon={<UserAddOutlined />}>
           <a href="/register">Register</a>
+        </Menu.Item>
+        <Menu.Item key="chat" icon={<RobotOutlined />}>
+          <a href="/chat">Chat Bot</a>
         </Menu.Item>
       </Menu>
     );
