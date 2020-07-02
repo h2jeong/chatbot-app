@@ -8,85 +8,76 @@ import { RobotOutlined, SmileOutlined } from "@ant-design/icons";
 import CardComponent from "./Card";
 
 function ChatBox() {
+  const messages = useSelector(state => state.chat.messages);
   const dispatch = useDispatch();
-  const messagesFromRedux = useSelector(state => state.chat.messages);
 
   useEffect(() => {
     eventQuery("welcomeToMyWebsite");
   }, []);
 
-  const testQuery = async text => {
-    // let conversations = [];
+  // textQruery
+  //   "fulfillmentMessages": [
+  //     {
+  //         "platform": "PLATFORM_UNSPECIFIED",
+  //         "text": {
+  //             "text": [
+  //                 "Hi! How are you doing?"
+  //             ]
+  //         },
+  //         "message": "text"
+  //     }
+  // ],
 
+  const textQruery = async text => {
     // 1. take care of the message I sent
     let conversation = {
       who: "user",
-      content: {
-        text: {
-          text: text
-        }
-      }
+      content: { text: { text: text } }
     };
+    // 대화목록 저장해서 뿌려주기
+    console.log(conversation);
     dispatch(saveMessage(conversation));
-    // console.log("text I sent ", conversation);
 
     // 2. TAKE CARE OF THE MESSAGE CHATBOT SENT
-    const textQueryVarailabes = { text };
-
+    // => I will send request to the textQuery route
     try {
-      // I will send request to the textQuery route
-      const response = await Axios.post(
-        "/api/dialogflow/textQuery",
-        textQueryVarailabes
-      );
-      // let content = response.data.fulfillmentMessages[0];
-
+      let response = await Axios.post("/api/dialogflow/textQuery", { text });
       for (let content of response.data.fulfillmentMessages) {
-        let conversation = {
+        conversation = {
           who: "bot",
           content: content
         };
+        console.log(conversation);
         dispatch(saveMessage(conversation));
-        // console.log("text bot sent ", conversation);
       }
     } catch (err) {
       conversation = {
-        who: "bot",
+        user: "bot",
         content: {
-          text: {
-            text: "Error just occured, please check the problem"
-          }
+          text: { text: "Error just occured, please check the problem" }
         }
       };
+      console.log(conversation);
       dispatch(saveMessage(conversation));
     }
   };
-
+  // eventQuery
   const eventQuery = async event => {
     // 1. make a trigger this event function
-    // => whenever call this components => useEffect
+    // => whenever called this components => useEffect
 
     // 2. TAKE CARE OF THE MESSAGE CHATBOT SENT
-    const eventQueryVarailabes = { event };
-
+    // async/ await 처리
     try {
-      // I will send request to the textQuery route
-      const response = await Axios.post(
-        "/api/dialogflow/eventQuery",
-        eventQueryVarailabes
-      );
-      //   let content = response.data.fulfillmentMessages[0];
-      //   let conversation = {
-      //     who: "bot",
-      //     content: content
-      //   };
-      //   dispatch(saveMessage(conversation));
+      let response = await Axios.post("/api/dialogflow/eventQuery", { event });
 
       for (let content of response.data.fulfillmentMessages) {
         let conversation = {
           who: "bot",
           content: content
         };
+
+        console.log(conversation);
         dispatch(saveMessage(conversation));
       }
     } catch (err) {
@@ -94,74 +85,52 @@ function ChatBox() {
         who: "bot",
         content: {
           text: {
-            text: "Error just occured, please check the problem"
+            text: " Error just occured, please check the problem"
           }
         }
       };
+
       dispatch(saveMessage(conversation));
     }
   };
-
   const keyPressHandler = e => {
     if (e.key === "Enter") {
-      if (!e.target.value) {
-        return alert("you need to type something first");
-      }
+      if (!e.target.value) return alert("Please enter your conversation! ");
 
-      // we will send request to text query route
-      testQuery(e.target.value);
+      textQruery(e.target.value);
       e.target.value = "";
     }
   };
 
-  const renderCards = cards =>
-    cards.map((card, i) => (
+  const renderCards = cards => {
+    console.log("cards:", cards);
+    return cards.map((card, i) => (
       <CardComponent key={i} cardInfo={card.structValue} />
     ));
+  };
 
   const renderOneMessage = (message, i) => {
     console.log("message:", message);
 
+    let messageInfo = [];
     // we need to give some condition here to separate message kinds
-
-    // template for normal text
     if (message.content && message.content.text && message.content.text.text) {
-      return (
-        <Message key={i} who={message.who} text={message.content.text.text} />
-      );
-
+      // template for normal text
+      messageInfo = message.content.text.text;
+    } else if (message.content && message.content.payload.fields.card) {
       // template for card message
-    } else if (
-      message.content &&
-      message.content.payload &&
-      message.content.payload.fields.card
-    ) {
-      const AvatarSrc =
-        message.who === "bot" ? <RobotOutlined /> : <SmileOutlined />;
 
-      return (
-        <List.Item style={{ padding: "1rem" }}>
-          <List.Item.Meta
-            avatar={<Avatar icon={AvatarSrc} />}
-            title={message.who}
-            description={renderCards(
-              message.content.payload.fields.card.listValue.values
-            )}
-          />
-        </List.Item>
+      messageInfo = renderCards(
+        message.content.payload.fields.card.listValue.values
       );
     }
+    console.log("messageInfo", messageInfo);
+    return <Message key={i} who={message.who} text={messageInfo} />;
   };
 
   const renderMessage = messages => {
-    console.log("this", messages);
-    if (messages) {
-      return messages.map((message, i) => {
-        return renderOneMessage(message, i);
-      });
-    } else {
-      return null;
-    }
+    console.log("messages", messages);
+    return messages.map((message, i) => renderOneMessage(message, i));
   };
 
   return (
@@ -173,8 +142,8 @@ function ChatBox() {
         borderRadius: "7px"
       }}
     >
-      <div style={{ height: 644, width: "100%", overflow: "auth" }}>
-        {renderMessage(messagesFromRedux)}
+      <div style={{ height: 644, width: "100%", overflow: "auto" }}>
+        {renderMessage(messages)}
       </div>
       <input
         style={{

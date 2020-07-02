@@ -4,9 +4,8 @@ import { RobotOutlined, SmileOutlined } from "@ant-design/icons";
 
 function Message(props) {
   const AvatarSrc = props.who === "bot" ? <RobotOutlined /> : <SmileOutlined />;
-
   return (
-    <List.Item key={props.key} style={{ padding: "1rem" }}>
+    <List.Item style={{ padding: "1rem" }}>
       <List.Item.Meta
         avatar={<Avatar icon={AvatarSrc} />}
         title={props.who}

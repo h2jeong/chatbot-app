@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const dialogflow = require("dialogflow");
 const config = require("../config/keys");
+const dialogflow = require("dialogflow");
 
-const projectId = config.googleProjectID;
 const sessionId = config.dialogFlowSessionId;
+const projectId = config.googleProjectID;
 const languageCode = config.dislogFlowSessionLanguageCode;
 
 // Create a new session
@@ -12,8 +12,6 @@ const sessionClient = new dialogflow.SessionsClient();
 const sessionPath = sessionClient.sessionPath(projectId, sessionId);
 
 router.post("/textQuery", async (req, res) => {
-  // We need to send some information that comes from the client to Dialogflow API
-
   // The text query request.
   const request = {
     session: sessionPath,
@@ -38,11 +36,11 @@ router.post("/textQuery", async (req, res) => {
   } else {
     console.log(`  No intent matched.`);
   }
-
   res.send(result);
 });
 
 router.post("/eventQuery", async (req, res) => {
+  // The event query request.
   const request = {
     session: sessionPath,
     queryInput: {
@@ -66,7 +64,6 @@ router.post("/eventQuery", async (req, res) => {
   } else {
     console.log(`  No intent matched.`);
   }
-
   res.send(result);
 });
 

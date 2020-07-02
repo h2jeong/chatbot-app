@@ -6,11 +6,11 @@ import { EllipsisOutlined } from "@ant-design/icons";
 function CardComponent(props) {
   return (
     <Card
-      style={{ width: 300 }}
+      style={{ width: 299, display: "inline-block" }}
       cover={
         <img
-          alt={props.cardInfo.fields.description.stringValue}
           src={props.cardInfo.fields.image.stringValue}
+          alt={props.cardInfo.fields.description.stringValue}
         />
       }
       actions={[
@@ -32,3 +32,29 @@ function CardComponent(props) {
 }
 
 export default CardComponent;
+
+// "values": [
+//     {
+//         "structValue": {
+//             "fields": {
+//                 "description": {
+//                     "stringValue": "[Ep.125] 펭수의 이장 일기 (ENG)",
+//                     "kind": "stringValue"
+//                 },
+//                 "image": {
+//                     "stringValue": "https://yt3.ggpht.com/a/AATXAJz_WMq14sCE1e8fNpAAIKUyKRlZ1sT0ztc4fv2DDQ=s288-c-k-c0xffffffff-no-rj-mo",
+//                     "kind": "stringValue"
+//                 },
+//                 "link": {
+//                     "stringValue": "https://www.youtube.com/watch?v=BF_CCavEymc&t=0s",
+//                     "kind": "stringValue"
+//                 },
+//                 "stack": {
+//                     "stringValue": "MERN STACK",
+//                     "kind": "stringValue"
+//                 }
+//             }
+//         },
+//         "kind": "structValue"
+//     }
+// ]
