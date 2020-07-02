@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import io from "socket.io-client";
 import moment from "moment";
-import { getChats } from "../../../_action/chat_action";
+import { getChats, afterPostMessage } from "../../../_action/chat_action";
 import ChatCard from "./Sections/ChatCard";
 
 const server = "http://localhost:5000";
@@ -14,7 +14,7 @@ const socket = io.connect(server);
 function ChattingPage() {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.user.auth);
-  const chats = useSelector(state => state.chat.chats);
+  const chat = useSelector(state => state.chat);
 
   const [ChatMessage, setChatMessage] = useState("");
 
@@ -23,7 +23,8 @@ function ChattingPage() {
     dispatch(getChats());
 
     socket.on("Output Chat Message", messagesFromBackEnd => {
-      console.log(messagesFromBackEnd);
+      // console.log(messagesFromBackEnd);
+      dispatch(afterPostMessage(messagesFromBackEnd));
     });
   }, []);
 
@@ -50,7 +51,9 @@ function ChattingPage() {
   };
 
   const renderCards = () => {
-    return chats && chats.map((chat, i) => <ChatCard key={i} {...chat} />);
+    return (
+      chat.chats && chat.chats.map((chat, i) => <ChatCard key={i} {...chat} />)
+    );
   };
 
   return (
@@ -65,7 +68,7 @@ function ChattingPage() {
           style={{ height: "500px", overflowY: "scroll" }}
         >
           {/* RENDERCHATS */}
-          {chats && renderCards()}
+          {chat.chats && renderCards()}
           <div
             // ref={el => {
             //   this.messagesEnd = el;

@@ -6,3 +6,4 @@ export const AUTH_USER = "auth_user";
 export const SAVE_MESSAGE = "save_message";
 
 export const GET_CHATS = "get_chats";
+export const AFTER_POST_MESSAGE = "after_post_message";
