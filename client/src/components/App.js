@@ -7,7 +7,8 @@ import RegisterPage from "./views/RegisterPage/RegisterPage";
 import { Layout } from "antd";
 import NavBar from "./views/NavBar/NavBar";
 import auth from "../hoc/auth";
-import Chatbot from "./Chatbot/Chatbot";
+import Chatbot from "./views/Chatbot/Chatbot";
+import ChattingPage from "./views/ChattingPage/ChattingPage";
 
 const { Footer, Content, Header } = Layout;
 
@@ -24,7 +25,8 @@ function App() {
               <Route exact path="/" component={auth(LandingPage, null)} />
               <Route path="/login" component={auth(LoginPage, false)} />
               <Route path="/register" component={auth(RegisterPage, false)} />
-              <Route path="/chat" component={auth(Chatbot, null)} />
+              <Route path="/chat" component={auth(Chatbot, true)} />
+              <Route path="/chatting" component={auth(ChattingPage, null)} />
             </Switch>
           </div>
         </Content>

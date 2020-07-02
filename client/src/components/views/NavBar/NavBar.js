@@ -9,7 +9,8 @@ import {
   UserAddOutlined,
   LogoutOutlined,
   PoweroffOutlined,
-  RobotOutlined
+  RobotOutlined,
+  WechatOutlined
 } from "@ant-design/icons";
 
 function NavBar(props) {
@@ -41,8 +42,11 @@ function NavBar(props) {
         <Menu.Item key="register" icon={<UserAddOutlined />}>
           <a href="/register">Register</a>
         </Menu.Item>
-        <Menu.Item key="chat" icon={<RobotOutlined />}>
-          <a href="/chat">Chat Bot</a>
+        <Menu.Item
+          key="chatting"
+          icon={<WechatOutlined style={{ color: "#1890ff" }} />}
+        >
+          <a href="/chatting">Chatting</a>
         </Menu.Item>
       </Menu>
     );
@@ -51,6 +55,9 @@ function NavBar(props) {
       <Menu mode="horizontal" selectedKeys={["home"]}>
         <Menu.Item key="home" icon={<HomeOutlined />}>
           <a href="/">Home</a>
+        </Menu.Item>
+        <Menu.Item key="chat" icon={<RobotOutlined />}>
+          <a href="/chat">Chatbot</a>
         </Menu.Item>
         <Menu.Item key="logout" icon={<LogoutOutlined />}>
           <span onClick={onHandleLogout}>Log out</span>

@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { saveMessage } from "../../../_action/chat_action";
+import { saveMessage } from "../../../../_action/chat_action";
 import Message from "./Message";
-import { List, Avatar } from "antd";
-import { RobotOutlined, SmileOutlined } from "@ant-design/icons";
 import CardComponent from "./Card";
 
 function ChatBox() {

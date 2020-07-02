@@ -6,6 +6,9 @@ const config = require("./server/config/keys");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+// server for chat
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 
 const connect = mongoose
   .connect(config.mongoURI, {
