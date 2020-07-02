@@ -1,12 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Row, Col } from "antd";
 import { MessageOutlined, EnterOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
+import io from "socket.io-client";
+import moment from "moment";
+
+const server = "http://localhost:5000";
+const socket = io.connect(server);
 
 function ChattingPage() {
+  const auth = useSelector(state => state.user.auth);
   const [ChatMessage, setChatMessage] = useState("");
+
   useEffect(() => {
     // getChats
+
+    socket.on("Output Chat Message", messagesFromBackEnd => {
+      console.log(messagesFromBackEnd);
+    });
   }, []);
+
+  const onInputChange = e => {
+    setChatMessage(e.target.value);
+  };
+
+  const onFormSubmit = e => {
+    e.preventDefault();
+    const variable = {
+      chatMessage: ChatMessage,
+      userId: auth.user._id,
+      userName: auth.user.name,
+      userImage: auth.user.image,
+      nowTime: moment(),
+      type: "Image"
+    };
+
+    console.log(variable);
+    // 대화 전송하기
+
+    socket.emit("Input Chat Message", variable);
+    setChatMessage("");
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", width: 800 }}>
@@ -29,7 +64,11 @@ function ChattingPage() {
         </div>
 
         <Row>
-          <Form layout="inline" style={{ width: "100%" }} onSubmit>
+          <Form
+            layout="inline"
+            style={{ width: "100%" }}
+            onSubmit={onFormSubmit}
+          >
             <Col span={18}>
               <Input
                 id="message"
@@ -39,7 +78,7 @@ function ChattingPage() {
                 placeholder="Let's start talking"
                 type="text"
                 value={ChatMessage}
-                onChange
+                onChange={onInputChange}
               />
             </Col>
             <Col span={2}>{/* DROPZONE */}</Col>
@@ -48,7 +87,7 @@ function ChattingPage() {
               <Button
                 type="primary"
                 style={{ width: "100%" }}
-                onClick
+                onClick={onFormSubmit}
                 htmlType="submit"
               >
                 <EnterOutlined />
@@ -61,4 +100,4 @@ function ChattingPage() {
   );
 }
 
-export default ChattingPage;
+export default withRouter(ChattingPage);

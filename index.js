@@ -9,6 +9,7 @@ const path = require("path");
 // server for chat
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
+const { Chat } = require("./server/models/Chat");
 
 const connect = mongoose
   .connect(config.mongoURI, {
@@ -30,6 +31,32 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/users", require("./server/routes/users"));
 app.use("/api/dialogflow", require("./server/routes/dialogflow"));
 
+io.on("connection", socket => {
+  socket.on("Input Chat Message", msg => {
+    connect.then(db => {
+      try {
+        let chat = new Chat({
+          message: msg.chatMessage,
+          sender: msg.userId,
+          type: msg.type
+        });
+
+        chat.save((err, doc) => {
+          if (err) return res.json({ success: false, err });
+
+          Chat.find({ _id: doc._id })
+            .populate("sender")
+            .exec((err, doc) => {
+              return io.emit("Output Chat Message", doc);
+            });
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  });
+});
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
@@ -40,6 +67,6 @@ if (process.env.NODE_ENV === "production") {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server running at ${port}`);
 });

@@ -26,7 +26,7 @@ function App() {
               <Route path="/login" component={auth(LoginPage, false)} />
               <Route path="/register" component={auth(RegisterPage, false)} />
               <Route path="/chat" component={auth(Chatbot, true)} />
-              <Route path="/chatting" component={auth(ChattingPage, null)} />
+              <Route path="/chatting" component={auth(ChattingPage, true)} />
             </Switch>
           </div>
         </Content>

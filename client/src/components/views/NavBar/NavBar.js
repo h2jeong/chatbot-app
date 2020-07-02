@@ -42,12 +42,6 @@ function NavBar(props) {
         <Menu.Item key="register" icon={<UserAddOutlined />}>
           <a href="/register">Register</a>
         </Menu.Item>
-        <Menu.Item
-          key="chatting"
-          icon={<WechatOutlined style={{ color: "#1890ff" }} />}
-        >
-          <a href="/chatting">Chatting</a>
-        </Menu.Item>
       </Menu>
     );
   } else {
@@ -58,6 +52,12 @@ function NavBar(props) {
         </Menu.Item>
         <Menu.Item key="chat" icon={<RobotOutlined />}>
           <a href="/chat">Chatbot</a>
+        </Menu.Item>
+        <Menu.Item
+          key="chatting"
+          icon={<WechatOutlined style={{ color: "#1890ff" }} />}
+        >
+          <a href="/chatting">Chatting</a>
         </Menu.Item>
         <Menu.Item key="logout" icon={<LogoutOutlined />}>
           <span onClick={onHandleLogout}>Log out</span>
