@@ -1,7 +1,7 @@
 import React from "react";
 import Title from "antd/lib/typography/Title";
 import { RobotOutlined } from "@ant-design/icons";
-import ChatBox from "./sections/ChatBox";
+import ChatBox from "./Sections/ChatBox";
 
 function Chatbot() {
   return (

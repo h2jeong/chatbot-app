@@ -1,11 +1,11 @@
-import { SAVE_MESSAGE } from "../_action/types";
+import { GET_CHATS } from "../_action/types";
 
-export default function(state = { messages: [] }, action) {
+export default function(state = {}, action) {
   switch (action.type) {
-    case SAVE_MESSAGE:
+    case GET_CHATS:
       return {
         ...state,
-        messages: state.messages.concat(action.payload)
+        chats: action.payload
       };
     default:
       return state;

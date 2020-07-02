@@ -30,6 +30,7 @@ app.use("/uploads", express.static("uploads"));
 
 app.use("/api/users", require("./server/routes/users"));
 app.use("/api/dialogflow", require("./server/routes/dialogflow"));
+app.use("/api/chat", require("./server/routes/chat"));
 
 io.on("connection", socket => {
   socket.on("Input Chat Message", msg => {

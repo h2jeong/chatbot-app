@@ -1,8 +1,9 @@
-import { SAVE_MESSAGE } from "./types";
+import Axios from "axios";
+import { GET_CHATS } from "./types";
+import { CHAT_SERVER } from "../components/Config";
 
-export function saveMessage(dataToSubmit) {
-  return {
-    type: SAVE_MESSAGE,
-    payload: dataToSubmit
-  };
+export function getChats() {
+  const request = Axios.get(`${CHAT_SERVER}/getChats`).then(res => res.data);
+
+  return { type: GET_CHATS, payload: request };
 }

@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Row, Col } from "antd";
 import { MessageOutlined, EnterOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import io from "socket.io-client";
 import moment from "moment";
+import { getChats } from "../../../_action/chat_action";
+import ChatCard from "./Sections/ChatCard";
 
 const server = "http://localhost:5000";
 const socket = io.connect(server);
 
 function ChattingPage() {
+  const dispatch = useDispatch();
   const auth = useSelector(state => state.user.auth);
+  const chats = useSelector(state => state.chat.chats);
+
   const [ChatMessage, setChatMessage] = useState("");
 
   useEffect(() => {
     // getChats
+    dispatch(getChats());
 
     socket.on("Output Chat Message", messagesFromBackEnd => {
       console.log(messagesFromBackEnd);
@@ -33,14 +39,18 @@ function ChattingPage() {
       userName: auth.user.name,
       userImage: auth.user.image,
       nowTime: moment(),
-      type: "Image"
+      type: "Text"
     };
 
-    console.log(variable);
+    // console.log(variable);
     // 대화 전송하기
 
     socket.emit("Input Chat Message", variable);
     setChatMessage("");
+  };
+
+  const renderCards = () => {
+    return chats && chats.map((chat, i) => <ChatCard key={i} {...chat} />);
   };
 
   return (
@@ -55,6 +65,7 @@ function ChattingPage() {
           style={{ height: "500px", overflowY: "scroll" }}
         >
           {/* RENDERCHATS */}
+          {chats && renderCards()}
           <div
             // ref={el => {
             //   this.messagesEnd = el;

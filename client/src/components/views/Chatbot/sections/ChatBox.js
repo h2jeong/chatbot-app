@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { saveMessage } from "../../../../_action/chat_action";
+import { saveMessage } from "../../../../_action/chatbot_action";
 import Message from "./Message";
 import CardComponent from "./Card";
 
 function ChatBox() {
-  const messages = useSelector(state => state.chat.messages);
+  const messages = useSelector(state => state.chatbot.messages);
   const dispatch = useDispatch();
 
   useEffect(() => {
