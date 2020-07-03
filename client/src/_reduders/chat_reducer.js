@@ -12,6 +12,7 @@ export default function(state = {}, action) {
         ...state,
         chats: state.chats.concat(action.payload)
       };
+
     default:
       return state;
   }
