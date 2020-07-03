@@ -10,8 +10,43 @@ function ChatBox() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // eventQuery
+    async function eventQuery(event) {
+      // 1. make a trigger this event function
+      // => whenever called this components => useEffect
+
+      // 2. TAKE CARE OF THE MESSAGE CHATBOT SENT
+      // async/ await 처리
+      try {
+        let response = await Axios.post("/api/dialogflow/eventQuery", {
+          event
+        });
+
+        for (let content of response.data.fulfillmentMessages) {
+          let conversation = {
+            who: "bot",
+            content: content
+          };
+
+          // console.log(conversation);
+          dispatch(saveMessage(conversation));
+        }
+      } catch (err) {
+        let conversation = {
+          who: "bot",
+          content: {
+            text: {
+              text: " Error just occured, please check the problem"
+            }
+          }
+        };
+
+        dispatch(saveMessage(conversation));
+      }
+    }
+
     eventQuery("welcomeToMyWebsite");
-  }, []);
+  }, [dispatch]);
 
   // textQruery
   //   "fulfillmentMessages": [
@@ -33,7 +68,7 @@ function ChatBox() {
       content: { text: { text: text } }
     };
     // 대화목록 저장해서 뿌려주기
-    console.log(conversation);
+    // console.log(conversation);
     dispatch(saveMessage(conversation));
 
     // 2. TAKE CARE OF THE MESSAGE CHATBOT SENT
@@ -55,42 +90,11 @@ function ChatBox() {
           text: { text: "Error just occured, please check the problem" }
         }
       };
-      console.log(conversation);
+      // console.log(conversation);
       dispatch(saveMessage(conversation));
     }
   };
-  // eventQuery
-  const eventQuery = async event => {
-    // 1. make a trigger this event function
-    // => whenever called this components => useEffect
 
-    // 2. TAKE CARE OF THE MESSAGE CHATBOT SENT
-    // async/ await 처리
-    try {
-      let response = await Axios.post("/api/dialogflow/eventQuery", { event });
-
-      for (let content of response.data.fulfillmentMessages) {
-        let conversation = {
-          who: "bot",
-          content: content
-        };
-
-        console.log(conversation);
-        dispatch(saveMessage(conversation));
-      }
-    } catch (err) {
-      let conversation = {
-        who: "bot",
-        content: {
-          text: {
-            text: " Error just occured, please check the problem"
-          }
-        }
-      };
-
-      dispatch(saveMessage(conversation));
-    }
-  };
   const keyPressHandler = e => {
     if (e.key === "Enter") {
       if (!e.target.value) return alert("Please enter your conversation! ");
@@ -101,14 +105,14 @@ function ChatBox() {
   };
 
   const renderCards = cards => {
-    console.log("cards:", cards);
+    // console.log("cards:", cards);
     return cards.map((card, i) => (
       <CardComponent key={i} cardInfo={card.structValue} />
     ));
   };
 
   const renderOneMessage = (message, i) => {
-    console.log("message:", message);
+    // console.log("message:", message);
 
     let messageInfo = [];
     // we need to give some condition here to separate message kinds
@@ -127,7 +131,7 @@ function ChatBox() {
   };
 
   const renderMessage = messages => {
-    console.log("messages", messages);
+    // console.log("messages", messages);
     return messages.map((message, i) => renderOneMessage(message, i));
   };
 

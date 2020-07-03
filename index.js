@@ -10,9 +10,6 @@ const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const { Chat } = require("./server/models/Chat");
-const multer = require("multer");
-const fs = require("fs");
-const { auth } = require("./server/middleware/auth");
 
 const connect = mongoose
   .connect(config.mongoURI, {
@@ -34,34 +31,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/users", require("./server/routes/users"));
 app.use("/api/dialogflow", require("./server/routes/dialogflow"));
 app.use("/api/chat", require("./server/routes/chat"));
-
-let storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function(req, file, cb) {
-    // cb(null, file.fieldname + "-" + Date.now());
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-  // fileFilter
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    if (ext !== ".jpg" && ext !== ".png" && ext !== ".mp4" && ext !== ".gif") {
-      return cb(res.status(400).end("Only image is allowed"), false);
-    }
-    cb(null, true);
-  }
-});
-
-let upload = multer({ storage: storage }).single("file");
-
-app.post("/api/chat/uploadFiles", auth, (req, res) => {
-  // make storage and upload - multer
-  upload(req, res, err => {
-    if (err) return res.status(400).json({ success: false, err });
-    return res.json({ success: true, url: res.req.file.path });
-  });
-});
+app.use("/api/video", require("./server/routes/video"));
 
 io.on("connection", socket => {
   socket.on("Input Chat Message", msg => {

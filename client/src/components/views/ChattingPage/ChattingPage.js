@@ -32,7 +32,7 @@ function ChattingPage() {
       // console.log(messagesFromBackEnd);
       dispatch(afterPostMessage(messagesFromBackEnd));
     });
-  }, []);
+  }, [dispatch]);
 
   const onInputChange = e => {
     setChatMessage(e.target.value);
@@ -98,10 +98,10 @@ function ChattingPage() {
         <p style={{ fontSize: "2rem", textAlign: "center" }}> Real Time Chat</p>
       </div>
 
-      <div style={{ width: "100%", margin: "0 auto" }}>
+      <div style={{ width: "85%", margin: "0 auto" }}>
         <div
           className="infinite-container"
-          style={{ height: "500px", overflowY: "scroll" }}
+          style={{ height: "400px", overflowY: "scroll" }}
         >
           {/* RENDERCHATS */}
           {chat.chats && renderCards()}
