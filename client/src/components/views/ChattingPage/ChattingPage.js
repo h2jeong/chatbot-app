@@ -88,7 +88,7 @@ function ChattingPage() {
 
   const scrollTo = ref => {
     if (ref /* + other conditions */) {
-      ref.scrollIntoView({ behavior: "smooth", block: "start" });
+      ref.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   };
 

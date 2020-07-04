@@ -137,6 +137,12 @@ function Chatbot() {
     return messages.map((message, i) => renderOneMessage(message, i));
   };
 
+  const scrollTo = ref => {
+    if (ref /* + other conditions */) {
+      ref.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  };
+
   return (
     <div>
       <div
@@ -150,14 +156,15 @@ function Chatbot() {
       <div style={{ displqy: "flex", justifyContent: "center" }}>
         <div
           style={{
-            height: 700,
+            height: 600,
             width: 700,
             border: "3px solid black",
             borderRadius: "7px"
           }}
         >
-          <div style={{ height: 644, width: "100%", overflow: "auto" }}>
+          <div style={{ height: 544, width: "100%", overflow: "auto" }}>
             {renderMessage(messages)}
+            <div ref={scrollTo} style={{ float: "left", clear: "both" }} />
           </div>
           <input
             style={{
