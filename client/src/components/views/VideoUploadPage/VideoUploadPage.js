@@ -11,6 +11,7 @@ import { VIDEO_SERVER } from "../../Config";
 
 function VideoUploadPage(props) {
   const auth = useSelector(state => state.user.auth);
+  console.log(auth);
   const onDrop = files => {
     console.log(files);
     let formData = new FormData();

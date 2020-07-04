@@ -7,12 +7,12 @@ import RegisterPage from "./views/RegisterPage/RegisterPage";
 import { Layout } from "antd";
 import NavBar from "./views/NavBar/NavBar";
 import auth from "../hoc/auth";
-import Chatbot from "./views/Chatbot/Chatbot";
 import ChattingPage from "./views/ChattingPage/ChattingPage";
 import FooterComponent from "./views/Footer/Footer";
 import VideoUploadPage from "./views/VideoUploadPage/VideoUploadPage";
 import VideoDetailPage from "./views/VideoDetailPage/VideoDetailPage";
 import SubscriptionPage from "./views/SubscriptionPage/SubscriptionPage";
+import Chatbot from "./views/Chatbot/Chatbot";
 
 const { Content } = Layout;
 

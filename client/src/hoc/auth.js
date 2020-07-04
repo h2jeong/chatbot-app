@@ -29,7 +29,7 @@ export default function(WrappedComponent, option, adminRoute = null) {
               if (adminRoute && !res.payload.isAdmin) {
                 props.history.push("/");
               }
-            } else {
+            } else if (option === false) {
               props.history.push("/");
             }
           }

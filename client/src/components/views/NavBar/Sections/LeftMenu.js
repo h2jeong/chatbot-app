@@ -1,6 +1,10 @@
 import React from "react";
 import { Menu } from "antd";
-import { HomeOutlined, PushpinOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  PushpinOutlined,
+  CommentOutlined
+} from "@ant-design/icons";
 
 function LeftMenu() {
   return (
@@ -10,6 +14,9 @@ function LeftMenu() {
       </Menu.Item>
       <Menu.Item key="subscribe" icon={<PushpinOutlined />}>
         <a href="/subscribe">Subscription</a>
+      </Menu.Item>
+      <Menu.Item key="chat" icon={<CommentOutlined />}>
+        <a href="/chat">Chatting</a>
       </Menu.Item>
     </Menu>
   );

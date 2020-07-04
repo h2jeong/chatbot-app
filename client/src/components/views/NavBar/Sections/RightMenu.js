@@ -9,7 +9,6 @@ import {
   LogoutOutlined,
   PoweroffOutlined,
   UploadOutlined,
-  CommentOutlined,
   RobotOutlined
 } from "@ant-design/icons";
 
@@ -48,9 +47,6 @@ function RightMenu(props) {
       <Menu mode="horizontal">
         <Menu.Item key="upload" icon={<UploadOutlined />}>
           <a href="/upload">Upload</a>
-        </Menu.Item>
-        <Menu.Item key="chat" icon={<CommentOutlined />}>
-          <a href="/chat">Chatting</a>
         </Menu.Item>
         <Menu.Item key="logout" icon={<LogoutOutlined />}>
           <span onClick={onHandleLogout}>Log out</span>

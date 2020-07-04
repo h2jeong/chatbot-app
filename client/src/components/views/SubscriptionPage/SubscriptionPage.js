@@ -13,7 +13,7 @@ function SubscriptionPage() {
       <Row gutter={16}>
         <Col lg={6} md={8} xs={24}>
           <div style={{ position: "relative" }}>
-            <a>
+            <a href="http://www.naver.com">
               <img style={{ width: "100%" }} alt="thumbnail" />
               <div
                 className=" duration"
