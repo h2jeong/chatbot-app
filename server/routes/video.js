@@ -83,4 +83,13 @@ router.post("/uploadVideo", auth, (req, res) => {
   });
 });
 
+router.get("/getVideos", (req, res) => {
+  Video.find()
+    .populate("writer")
+    .exec((err, videos) => {
+      if (err) return res.status(400).json({ success: false, err });
+      res.status(200).json({ success: true, videos });
+    });
+});
+
 module.exports = router;
