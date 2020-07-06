@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { Input, Button, Form, message } from "antd";
 import Title from "antd/lib/typography/Title";
 import TextArea from "antd/lib/input/TextArea";
@@ -9,42 +8,91 @@ import Dropzone from "react-dropzone";
 import axios from "axios";
 import { VIDEO_SERVER } from "../../Config";
 
+const privacies = [
+  { value: 0, label: "private" },
+  { value: 1, label: "public" }
+];
+
+const categories = [
+  { value: 0, label: "travel" },
+  { value: 1, label: "education" },
+  { value: 2, label: "food" }
+];
+
 function VideoUploadPage(props) {
-  const auth = useSelector(state => state.user.auth);
   const [FilePath, setFilePath] = useState("");
-  const [Duration, setDuration] = useState(0);
-  const [ThumNail, setThumNail] = useState("");
+  const [Thumbnail, setThumbnail] = useState("");
+  const [Duration, setDuration] = useState("");
+  const [VideoTitle, setVideoTitle] = useState("");
+  const [Description, setDescription] = useState("");
+  const [Privacy, setPrivacy] = useState(0);
+  const [Category, setCategory] = useState("travel");
 
   const onDrop = files => {
-    console.log(files);
+    // console.log(files);
+    // using formData - send upload files - record to folder - receive filepath
+    // using filepath - send make thumbnails - ffmpeg - record to foler - recieve path & duration
+
     let formData = new FormData();
     formData.append("file", files[0]);
 
-    const config = {
-      header: {
-        "content-type": "multipart/form-data"
-      }
-    };
+    const config = { header: { "content-type": "multipart/form-data" } };
 
     axios.post(`${VIDEO_SERVER}/uploadFiles`, formData, config).then(res => {
       if (res.data.success) {
         setFilePath(res.data.filePath);
 
-        const variable = { filePath: res.data.filePath };
-        console.log(variable);
+        let variable = {
+          filePath: res.data.filePath
+        };
 
-        // 업로드 폴더에 저장하고 썸네일 만들어서 저장하고 응답
         axios.post(`${VIDEO_SERVER}/thumbnails`, variable).then(res => {
-          console.log(res.data);
           if (res.data.success) {
-            setThumNail(res.data.thumbnail);
+            setThumbnail(res.data.thumbnailPath);
             setDuration(res.data.duration);
           } else {
-            message.error("Failed to make thumbnail");
+            message.error("Failed to make thumbnails");
           }
         });
       } else {
-        message.error("Failed to upload files");
+        message.warning("Failed to upload files");
+      }
+    });
+  };
+
+  const onTitleChange = e => {
+    setVideoTitle(e.currentTarget.value);
+  };
+  const onDescriptionChange = e => {
+    setDescription(e.currentTarget.value);
+  };
+  const onPrivacyChange = e => {
+    setPrivacy(e.currentTarget.value);
+  };
+  const onCategoryChange = e => {
+    setCategory(e.currentTarget.value);
+  };
+
+  const onHandleSubmit = e => {
+    e.preventDefault();
+
+    let variable = {
+      title: VideoTitle,
+      description: Description,
+      privacy: Privacy,
+      category: Category,
+      filepath: FilePath,
+      duration: Duration,
+      thumbnail: Thumbnail
+    };
+
+    axios.post(`${VIDEO_SERVER}/uploadVideo`, variable).then(res => {
+      if (res.data.success) {
+        // console.log(res.data);
+        message.success("Upload Video Succeed");
+        props.history.push("/");
+      } else {
+        message.error("Failed to upload video");
       }
     });
   };
@@ -55,7 +103,7 @@ function VideoUploadPage(props) {
         <Title level={2}>Upload Video</Title>
         <hr />
       </div>
-      <Form onSubmit>
+      <Form onSubmit={onHandleSubmit}>
         <div
           style={{
             display: "flex",
@@ -82,37 +130,48 @@ function VideoUploadPage(props) {
             )}
           </Dropzone>
           {/* Thumbnail zone */}
-
-          <div>
-            <img alt="thumbnail" />
-          </div>
+          {Thumbnail && (
+            <div>
+              <img src={`http://localhost:5000/${Thumbnail}`} alt="thumbnail" />
+            </div>
+          )}
         </div>
         <br />
         <br />
         <label>Title</label>
-        <Input onChange value />
+        <Input onChange={onTitleChange} value={VideoTitle} />
         <br />
         <br />
         <label>Description</label>
-        <TextArea onChange value />
+        <TextArea onChange={onDescriptionChange} value={Description} />
         <br />
         <br />
-        <select>
-          <option key value>
-            label
-          </option>
+        <select onChange={onPrivacyChange}>
+          {privacies &&
+            privacies.map((el, i) => {
+              return (
+                <option key={i} value={el.value}>
+                  {el.label}
+                </option>
+              );
+            })}
         </select>
         <br />
         <br />
-        <select>
-          <option key value>
-            label
-          </option>
+        <select onChange={onCategoryChange}>
+          {categories &&
+            categories.map((el, i) => {
+              return (
+                <option key={i} value={el.value}>
+                  {el.label}
+                </option>
+              );
+            })}
         </select>
         <br />
         <br />
         {/* available - onClick={onSubmit}, invalid - htmlFor= 'submit'  */}
-        <Button type="primary" size="large" onClick>
+        <Button type="primary" size="large" onClick={onHandleSubmit}>
           Submit
         </Button>
       </Form>
