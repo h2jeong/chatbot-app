@@ -92,4 +92,19 @@ router.get("/getVideos", (req, res) => {
     });
 });
 
+router.post("/getVideo", (req, res) => {
+  Video.findByIdAndUpdate(
+    { _id: req.body.videoId },
+    {
+      $inc: { views: 1 }
+    },
+    { new: true }
+  )
+    .populate("writer")
+    .exec((err, video) => {
+      if (err) return res.status(400).json({ success: false, err });
+      res.status(200).json({ success: true, video });
+    });
+});
+
 module.exports = router;

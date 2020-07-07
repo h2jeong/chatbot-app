@@ -26,9 +26,9 @@ function LandingPage() {
       <Row gutter={[32, 16]}>
         {Videos.length > 0 &&
           Videos.map((video, i) => (
-            <Col lg={6} md={8} xs={24}>
+            <Col lg={6} md={8} xs={24} key={i}>
               <div style={{ position: "relative" }}>
-                <a href="www.naver.com">
+                <a href={`video/${video._id}`}>
                   <img
                     src={`http://localhost:5000/${video.thumbnail}`}
                     style={{ width: "100%" }}
@@ -69,7 +69,7 @@ function LandingPage() {
               />
               <span>{video.writer.name}</span>
               <br />
-              <span style={{ marginLeft: "3rem" }}>views </span> ・
+              <span style={{ marginLeft: "3rem" }}>{video.views} </span> ・
               <span>{moment(video.createdAt).format("YYYY-MM-DD")}</span>
             </Col>
           ))}

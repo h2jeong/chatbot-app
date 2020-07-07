@@ -32,6 +32,7 @@ app.use("/api/users", require("./server/routes/users"));
 app.use("/api/dialogflow", require("./server/routes/dialogflow"));
 app.use("/api/chat", require("./server/routes/chat"));
 app.use("/api/video", require("./server/routes/video"));
+app.use("/api/subscribe", require("./server/routes/subscribe"));
 
 io.on("connection", socket => {
   socket.on("Input Chat Message", msg => {
