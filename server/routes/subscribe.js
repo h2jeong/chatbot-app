@@ -3,7 +3,7 @@ const router = express.Router();
 const { Subscribe } = require("../models/Subscribe");
 
 router.post("/getCount", (req, res) => {
-  Subscribe.find({ videoId: req.body.videoId }, (err, result) => {
+  Subscribe.find({ userTo: req.body.userTo }, (err, result) => {
     if (err) return res.status(400).json({ success: false, err });
     res.status(200).json({ success: true, count: result.length });
   });

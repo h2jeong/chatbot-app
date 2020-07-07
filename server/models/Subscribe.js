@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const subscribeSchema = mongoose.Schema(
   {
     userTo: { type: Schema.Types.ObjectId, ref: "User" },
-    userFrom: { type: Schema.Types.ObjectId, ref: "User" },
-    videoId: { type: Schema.Types.ObjectId, ref: "Video" }
+    userFrom: { type: Schema.Types.ObjectId, ref: "User" }
   },
   { timestamps: true }
 );
