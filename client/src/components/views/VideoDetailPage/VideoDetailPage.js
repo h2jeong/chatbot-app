@@ -4,6 +4,7 @@ import axios from "axios";
 import { VIDEO_SERVER } from "../../Config";
 import SideVideo from "./Sections/SideVideo";
 import Subscriber from "./Sections/Subscriber";
+import LikeDislikes from "./Sections/LikeDislikes";
 
 function VideoDetailPage(props) {
   // console.log(props.match.params);
@@ -32,7 +33,12 @@ function VideoDetailPage(props) {
               style={{ width: "100%" }}
             />
             {/* actions={[ '배열'에 ReactNode 넣어주기]} */}
-            <List.Item actions={[<Subscriber userTo={Video.writer._id} />]}>
+            <List.Item
+              actions={[
+                <LikeDislikes />,
+                <Subscriber userTo={Video.writer._id} />
+              ]}
+            >
               <List.Item.Meta
                 avatar={<Avatar src={Video.writer.image} />}
                 title={Video.title}
