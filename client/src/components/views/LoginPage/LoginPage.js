@@ -19,6 +19,7 @@ function LoginPage(props) {
     dispatch(loginUser(values)).then(res => {
       if (res.payload.success) {
         message.success("Login Succeed");
+        // console.log(res.payload);
         props.history.push("/");
       } else {
         message.error("Login Failed. ");

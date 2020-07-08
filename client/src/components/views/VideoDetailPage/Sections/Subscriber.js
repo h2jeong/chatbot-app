@@ -19,13 +19,13 @@ function Subscriber(props) {
           message.error("Failed to get subscribed count");
         }
       });
-  }, []);
+  }, [props.userTo]);
 
   const handleSubscribe = () => {
     if (!auth.isAuth) {
       return message.warning("Log in and subscribe");
     }
-    if (props.userTo === auth.user._id) return;
+    // if (props.userTo === auth.user._id) return;
 
     const variable = {
       userTo: props.userTo,
@@ -77,6 +77,7 @@ function Subscriber(props) {
         fontSize: "1rem",
         textTransform: "uppercase"
       }}
+      disabled={props.userTo === auth.user._id}
     >
       {SubscribedCount} {IsSubscribe ? "Subscribed" : "Subscribe"}
     </Button>

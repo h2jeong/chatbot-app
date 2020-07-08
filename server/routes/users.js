@@ -23,6 +23,7 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+  console.log("login:", req.body);
   User.findOne({ email: req.body.email }).exec((err, user) => {
     if (err) return res.status(400).json({ success: false, err });
     if (!user) {
@@ -49,7 +50,7 @@ router.post("/login", (req, res) => {
             httpOnly: true
           })
           .status(200)
-          .json({ success: true });
+          .json({ success: true, userId: user._id });
       });
     });
   });
