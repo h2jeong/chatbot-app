@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import { Col, Avatar, Row } from "antd";
+import { Col, Avatar, Row, message } from "antd";
 import Meta from "antd/lib/card/Meta";
 import Title from "antd/lib/typography/Title";
+import axios from "axios";
+import moment from "moment";
 
 function SubscriptionPage() {
-  return (
-    <div style={{ width: "85%", margin: "3rem auto" }}>
-      <Title level={2}> Subscribed Videos </Title>
-      <hr />
+  const [Videos, setVideos] = useState([]);
 
-      <Row gutter={16}>
-        <Col lg={6} md={8} xs={24}>
+  useEffect(() => {
+    axios.post("/api/subscribe/subscribedList").then(res => {
+      if (res.data.success) {
+        console.log(res.data);
+        setVideos(res.data.videos);
+      } else {
+        message.error("Failed to get subscribed list");
+      }
+    });
+  }, []);
+
+  const renderVideos = () => {
+    return (
+      Videos &&
+      Videos.map((video, i) => (
+        <Col lg={6} md={8} xs={24} key={i}>
           <div style={{ position: "relative" }}>
             <a href="http://www.naver.com">
-              <img style={{ width: "100%" }} alt="thumbnail" />
+              <img
+                src={`http://localhost:5000/${video.thumbnail}`}
+                style={{ width: "100%" }}
+                alt="thumbnail"
+              />
               <div
                 className=" duration"
                 style={{
@@ -33,18 +50,35 @@ function SubscriptionPage() {
                   lineHeight: "12px"
                 }}
               >
-                <span>time</span>
+                <span>
+                  {moment
+                    .utc(moment.duration(video.duration, "s").asMilliseconds())
+                    .format("HH:mm:ss")}
+                </span>
               </div>
             </a>
           </div>
           <br />
-          <Meta avatar={<Avatar />} title />
-          <span>name </span>
+          <Meta
+            avatar={<Avatar src={video.writer.image} />}
+            title={video.title}
+          />
+          <span>{video.writer.name}</span>
           <br />
-          <span style={{ marginLeft: "3rem" }}> views</span>-{" "}
-          <span> date </span>
+          <span style={{ marginLeft: "3rem", color: "black" }}>
+            {video.views}
+          </span>{" "}
+          <span>{moment(video.createdAt).format("MMM DD YYYY")} </span>
         </Col>
-      </Row>
+      ))
+    );
+  };
+
+  return (
+    <div style={{ width: "85%", margin: "3rem auto" }}>
+      <Title level={2}> Subscribed Videos </Title>
+      <hr />
+      <Row gutter={16}>{Videos && renderVideos()}</Row>
     </div>
   );
 }
