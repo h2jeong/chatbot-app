@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from "react";
-import "./Comment.css";
-import InputComment from "./InputComment";
-import SingleComment from "./SingleComment";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { message } from "antd";
-import { useSelector } from "react-redux";
+import "./Comment.css";
+import InputComment from "./InputComment";
 
-function CommentComponent(props) {
+function Comments(props) {
   const auth = useSelector(state => state.user.auth);
-
-  const [Comments, setComments] = useState([]);
   const [Submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    axios
-      .post("/api/comment/getComments", { videoId: props.videoId })
-      .then(res => {
-        if (res.data.success) {
-          console.log(res.data);
-          setComments(res.data.comments);
-        } else {
-          message.error("Failed to get Comment List");
-        }
-      });
-  }, []);
 
   const handleSubmit = content => {
     console.log("handleSubmit:", content);
@@ -46,24 +30,22 @@ function CommentComponent(props) {
     axios.post("/api/comment/addComment", comment).then(res => {
       if (res.data.success) {
         console.log(res.data);
-        setComments(Comments.concat(res.data.comment));
+        props.onUpdate(res.data.comment);
       } else {
         message.error("Failed to add comment");
       }
     });
     setSubmitting(false);
   };
-
   return (
     <>
       {/* commentList */}
-      {Comments.length > 0 &&
-        Comments.map((comment, i) => (
-          <SingleComment key={i} comment={comment} />
-        ))}
+      {props.comments.map((comment, i) => (
+        <p key={i}>{comment.content}</p>
+      ))}
       <InputComment onSubmit={handleSubmit} submitting={Submitting} />
     </>
   );
 }
 
-export default CommentComponent;
+export default Comments;

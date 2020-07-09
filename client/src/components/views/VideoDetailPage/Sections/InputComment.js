@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Comment, Avatar, Form, Button, Input } from "antd";
+import { Form, Button, Input } from "antd";
 
 const { TextArea } = Input;
 
@@ -14,31 +14,21 @@ function InputComment(props) {
     setValue("");
   };
   return (
-    <Comment
-      avatar={
-        <Avatar
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          alt="Han Solo"
-        />
-      }
-      content={
-        <>
-          <Form.Item>
-            <TextArea rows={4} onChange={handleChange} value={Value} />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              htmlType="submit"
-              loading={props.submitting}
-              onClick={onSubmit}
-              type="primary"
-            >
-              Add Comment
-            </Button>
-          </Form.Item>
-        </>
-      }
-    />
+    <>
+      <Form.Item>
+        <TextArea rows={4} onChange={handleChange} value={Value} />
+      </Form.Item>
+      <Form.Item>
+        <Button
+          htmlType="submit"
+          loading={props.submitting}
+          onClick={onSubmit}
+          type="primary"
+        >
+          Add Comment
+        </Button>
+      </Form.Item>
+    </>
   );
 }
 

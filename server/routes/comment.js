@@ -16,7 +16,12 @@ router.post("/addComment", (req, res) => {
 
   comment.save((err, comment) => {
     if (err) return res.status(400).json({ success: false, err });
-    res.status(200).json({ success: true, comment });
+    Comment.findById({ _id: comment._id })
+      .populate("writer")
+      .exec((err, comment) => {
+        if (err) return res.status(400).json({ success: false, err });
+        res.status(200).json({ success: true, comment });
+      });
   });
 });
 

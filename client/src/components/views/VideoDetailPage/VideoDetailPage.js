@@ -5,12 +5,13 @@ import { VIDEO_SERVER } from "../../Config";
 import SideVideo from "./Sections/SideVideo";
 import Subscriber from "./Sections/Subscriber";
 import LikeDislikes from "./Sections/LikeDislikes";
-import Comment from "./Sections/Comment";
+import Comments from "./Sections/Comments";
 
 function VideoDetailPage(props) {
   // console.log(props.match.params);
   const videoId = props.match.params.videoId;
   const [Video, setVideo] = useState(null);
+  const [CommentList, setCommentList] = useState([]);
 
   useEffect(() => {
     axios.post(`${VIDEO_SERVER}/getVideo`, { videoId }).then(res => {
@@ -21,7 +22,20 @@ function VideoDetailPage(props) {
         message.error("Failed to get video by Id");
       }
     });
+
+    axios.post("/api/comment/getComments", { videoId }).then(res => {
+      if (res.data.success) {
+        console.log(res.data);
+        setCommentList(res.data.comments);
+      } else {
+        message.error("Failed to get Comment List");
+      }
+    });
   }, [videoId]);
+
+  const updateComments = comment => {
+    setCommentList(CommentList.concat(comment));
+  };
 
   if (Video) {
     return (
@@ -47,7 +61,11 @@ function VideoDetailPage(props) {
               />
             </List.Item>
             {/* comment */}
-            <Comment videoId={videoId} />
+            <Comments
+              comments={CommentList}
+              videoId={videoId}
+              onUpdate={updateComments}
+            />
           </div>
         </Col>
         <Col lg={6} xs={24}>
