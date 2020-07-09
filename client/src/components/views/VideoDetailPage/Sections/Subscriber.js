@@ -13,7 +13,7 @@ function Subscriber(props) {
       .post("/api/subscribe/getCount", { userTo: props.userTo })
       .then(res => {
         if (res.data.success) {
-          console.log(res.data);
+          // console.log(res.data);
           setSubscribedCount(res.data.count);
         } else {
           message.error("Failed to get subscribed count");

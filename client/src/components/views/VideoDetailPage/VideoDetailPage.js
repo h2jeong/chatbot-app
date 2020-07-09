@@ -5,6 +5,7 @@ import { VIDEO_SERVER } from "../../Config";
 import SideVideo from "./Sections/SideVideo";
 import Subscriber from "./Sections/Subscriber";
 import LikeDislikes from "./Sections/LikeDislikes";
+import Comment from "./Sections/Comment";
 
 function VideoDetailPage(props) {
   // console.log(props.match.params);
@@ -14,7 +15,7 @@ function VideoDetailPage(props) {
   useEffect(() => {
     axios.post(`${VIDEO_SERVER}/getVideo`, { videoId }).then(res => {
       if (res.data.success) {
-        console.log(res.data);
+        //console.log(res.data);
         setVideo(res.data.video);
       } else {
         message.error("Failed to get video by Id");
@@ -46,6 +47,7 @@ function VideoDetailPage(props) {
               />
             </List.Item>
             {/* comment */}
+            <Comment videoId={videoId} />
           </div>
         </Col>
         <Col lg={6} xs={24}>

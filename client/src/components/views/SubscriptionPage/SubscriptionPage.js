@@ -12,7 +12,7 @@ function SubscriptionPage() {
   useEffect(() => {
     axios.post("/api/subscribe/subscribedList").then(res => {
       if (res.data.success) {
-        console.log(res.data);
+        // console.log(res.data);
         setVideos(res.data.videos);
       } else {
         message.error("Failed to get subscribed list");
@@ -26,7 +26,7 @@ function SubscriptionPage() {
       Videos.map((video, i) => (
         <Col lg={6} md={8} xs={24} key={i}>
           <div style={{ position: "relative" }}>
-            <a href="http://www.naver.com">
+            <a href={`video/${video._id}`}>
               <img
                 src={`http://localhost:5000/${video.thumbnail}`}
                 style={{ width: "100%" }}

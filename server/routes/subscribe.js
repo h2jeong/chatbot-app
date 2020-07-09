@@ -45,7 +45,7 @@ router.post("/subscribedList", auth, (req, res) => {
       .populate("writer")
       .exec((err, videos) => {
         if (err) return res.status(400).json({ success: false, err });
-        console.log("videoList:", videos);
+        // console.log("videoList:", videos);
         res.status(200).json({ success: true, videos });
       });
   });

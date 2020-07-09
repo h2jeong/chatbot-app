@@ -1,0 +1,13 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const commentSchema = mongoose.Schema({
+  writer: { type: Schema.Types.ObjectId, ref: "User" },
+  content: { type: String, minLength: 1 },
+  videoId: { type: Schema.Types.ObjectId, ref: "Video" },
+  commentId: { type: Schema.Types.ObjectId, ref: "Comment" }
+});
+
+const Comment = mongoose.model("Comment", commentSchema);
+
+module.exports = { Comment };
