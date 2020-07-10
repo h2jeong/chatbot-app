@@ -4,13 +4,18 @@ import { Form, Button, Input } from "antd";
 const { TextArea } = Input;
 
 function InputComment(props) {
+  console.log("inputComment:", props);
   const [Value, setValue] = useState("");
 
   const handleChange = e => {
     setValue(e.target.value);
   };
   const onSubmit = () => {
-    props.onSubmit(Value);
+    if (props.responseTo) {
+      props.onSubmit({ content: Value, responseTo: props.responseTo });
+    } else {
+      props.onSubmit({ content: Value });
+    }
     setValue("");
   };
   return (

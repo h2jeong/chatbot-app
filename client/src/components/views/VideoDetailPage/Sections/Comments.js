@@ -4,13 +4,17 @@ import axios from "axios";
 import { message } from "antd";
 import "./Comment.css";
 import InputComment from "./InputComment";
+import SingleComment from "./SingleComment";
+import ReplyComment from "./ReplyComment";
 
 function Comments(props) {
+  const { comments, videoId, onUpdate } = props;
   const auth = useSelector(state => state.user.auth);
   const [Submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = content => {
-    console.log("handleSubmit:", content);
+  const handleSubmit = dataToSubmit => {
+    console.log("handleSubmit:", dataToSubmit);
+    const { content, responseTo } = dataToSubmit;
     if (!content) {
       return message.warning("Plese Write a comment");
     }
@@ -22,15 +26,15 @@ function Comments(props) {
     let comment = {
       writer: auth.user._id,
       content: content,
-      videoId: props.videoId
-      // commentId: props.commentId
+      videoId: videoId,
+      responseTo: responseTo
     };
     console.log(comment);
     // db에 전송하기 - setSubmitting(false);
     axios.post("/api/comment/addComment", comment).then(res => {
       if (res.data.success) {
         console.log(res.data);
-        props.onUpdate(res.data.comment);
+        onUpdate(res.data.comment);
       } else {
         message.error("Failed to add comment");
       }
@@ -40,9 +44,24 @@ function Comments(props) {
   return (
     <>
       {/* commentList */}
-      {props.comments.map((comment, i) => (
-        <p key={i}>{comment.content}</p>
-      ))}
+      {comments.map(
+        (comment, i) =>
+          !comment.responseTo && (
+            <div key={i}>
+              <SingleComment
+                comment={comment}
+                onSubmit={handleSubmit}
+                submitting={Submitting}
+              />
+              <ReplyComment
+                comments={comments}
+                commentId={comment._id}
+                onSubmit={handleSubmit}
+                submitting={Submitting}
+              />
+            </div>
+          )
+      )}
       <InputComment onSubmit={handleSubmit} submitting={Submitting} />
     </>
   );
