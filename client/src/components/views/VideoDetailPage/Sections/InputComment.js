@@ -6,7 +6,6 @@ const { TextArea } = Input;
 function InputComment(props) {
   console.log("inputComment:", props);
   const [Value, setValue] = useState("");
-
   const handleChange = e => {
     setValue(e.target.value);
   };
@@ -18,6 +17,7 @@ function InputComment(props) {
     }
     setValue("");
   };
+
   return (
     <>
       <Form.Item>

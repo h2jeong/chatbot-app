@@ -5,11 +5,12 @@ import InputComment from "./InputComment";
 import LikeDislikes from "./LikeDislikes";
 
 function SingleComment(props) {
-  const { comment, onSubmit, submitting } = props;
+  const { comment, onSubmit } = props;
   const [OpenInput, setOpenInput] = useState(false);
   const handleOpenInput = () => {
     setOpenInput(!OpenInput);
   };
+
   const actions = [
     <LikeDislikes />,
     <span key="comment-basic-reply-to" onClick={handleOpenInput}>
@@ -33,8 +34,10 @@ function SingleComment(props) {
       {OpenInput && (
         <InputComment
           responseTo={comment._id}
-          onSubmit={onSubmit}
-          submitting={submitting}
+          onSubmit={dataToSubmit => {
+            onSubmit(dataToSubmit);
+            handleOpenInput();
+          }}
         />
       )}
     </>

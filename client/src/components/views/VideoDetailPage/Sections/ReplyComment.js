@@ -1,34 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import SingleComment from "./SingleComment";
 
 function ReplyComment(props) {
-  const { comments, commentId, onSubmit, submitting } = props;
+  const { comments, commentId, onSubmit } = props;
+  const [Show, setShow] = useState(false);
+  const handleShow = () => {
+    setShow(!Show);
+  };
 
-  return (
-    <>
-      {comments.filter(comment => comment.responseTo === commentId).length >
-        0 && (
-        <p style={{ fontSize: "14px", margin: 0, color: "gray" }} onClick>
+  const filtedList = comments.filter(
+    comment => comment.responseTo === commentId
+  );
+
+  if (filtedList.length > 0) {
+    return (
+      <>
+        <p
+          style={{ fontSize: "14px", margin: 0, color: "gray" }}
+          onClick={handleShow}
+        >
           View
-          {comments.filter(comment => comment.responseTo === commentId).length}
+          {filtedList.length}
           more comment(s)
         </p>
-      )}
-      {comments.map(
-        (comment, i) =>
-          comment.responseTo === commentId && (
+        {Show &&
+          filtedList.map((comment, i) => (
             <div key={i} style={{ width: "80%", marginLeft: "40px" }}>
-              <SingleComment
-                comment={comment}
-                onSubmit={onSubmit}
-                submitting={submitting}
-              />
+              <SingleComment comment={comment} onSubmit={onSubmit} />
               <ReplyComment {...props} commentId={comment._id} />
             </div>
-          )
-      )}
-    </>
-  );
+          ))}
+      </>
+    );
+  } else {
+    return null;
+  }
 }
 
 export default ReplyComment;

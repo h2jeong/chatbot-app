@@ -25,7 +25,7 @@ function VideoDetailPage(props) {
 
     axios.post("/api/comment/getComments", { videoId }).then(res => {
       if (res.data.success) {
-        console.log(res.data);
+        // console.log(res.data);
         setCommentList(res.data.comments);
       } else {
         message.error("Failed to get Comment List");
