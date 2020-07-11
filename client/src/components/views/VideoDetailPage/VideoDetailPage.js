@@ -4,7 +4,7 @@ import axios from "axios";
 import { VIDEO_SERVER } from "../../Config";
 import SideVideo from "./Sections/SideVideo";
 import Subscriber from "./Sections/Subscriber";
-import LikeDislikes from "./Sections/LikeDislikes";
+import LikeUnlikes from "./Sections/LikeUnlikes";
 import Comments from "./Sections/Comments";
 
 function VideoDetailPage(props) {
@@ -50,7 +50,7 @@ function VideoDetailPage(props) {
             {/* actions={[ '배열'에 ReactNode 넣어주기]} */}
             <List.Item
               actions={[
-                <LikeDislikes />,
+                <LikeUnlikes videoId={videoId} />,
                 <Subscriber userTo={Video.writer._id} />
               ]}
             >

@@ -34,6 +34,7 @@ app.use("/api/chat", require("./server/routes/chat"));
 app.use("/api/video", require("./server/routes/video"));
 app.use("/api/subscribe", require("./server/routes/subscribe"));
 app.use("/api/comment", require("./server/routes/comment"));
+app.use("/api/like", require("./server/routes/likeUnlike"));
 
 io.on("connection", socket => {
   socket.on("Input Chat Message", msg => {

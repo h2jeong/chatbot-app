@@ -4,7 +4,7 @@ import { Form, Button, Input } from "antd";
 const { TextArea } = Input;
 
 function InputComment(props) {
-  console.log("inputComment:", props);
+  // console.log("inputComment:", props);
   const [Value, setValue] = useState("");
   const handleChange = e => {
     setValue(e.target.value);

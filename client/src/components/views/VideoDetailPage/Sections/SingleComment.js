@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Comment, Tooltip, Avatar } from "antd";
 import moment from "moment";
 import InputComment from "./InputComment";
-import LikeDislikes from "./LikeDislikes";
+import LikeUnlikes from "./LikeUnlikes";
 
 function SingleComment(props) {
   const { comment, onSubmit } = props;
@@ -12,7 +12,7 @@ function SingleComment(props) {
   };
 
   const actions = [
-    <LikeDislikes />,
+    <LikeUnlikes commentId={comment._id} />,
     <span key="comment-basic-reply-to" onClick={handleOpenInput}>
       Reply to
     </span>

@@ -77,7 +77,7 @@ function Subscriber(props) {
         fontSize: "1rem",
         textTransform: "uppercase"
       }}
-      disabled={auth.isAuth && props.userTo === auth.user._id}
+      disabled={auth && auth.isAuth && props.userTo === auth.user._id}
     >
       {SubscribedCount} {IsSubscribe ? "Subscribed" : "Subscribe"}
     </Button>

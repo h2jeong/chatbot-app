@@ -19,9 +19,8 @@ function ReplyComment(props) {
           style={{ fontSize: "14px", margin: 0, color: "gray" }}
           onClick={handleShow}
         >
-          View
-          {filtedList.length}
-          more comment(s)
+          View <span style={{ color: "black" }}>{filtedList.length}</span> more
+          comment(s)
         </p>
         {Show &&
           filtedList.map((comment, i) => (
