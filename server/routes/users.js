@@ -23,7 +23,7 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  console.log("login:", req.body);
+  // console.log("login:", req.body);
   User.findOne({ email: req.body.email }).exec((err, user) => {
     if (err) return res.status(400).json({ success: false, err });
     if (!user) {
@@ -36,7 +36,7 @@ router.post("/login", (req, res) => {
     // 비밀번호 복호화 해서 비교하기.
     user.comparePassword(req.body.password, (err, result) => {
       if (err) return res.json({ success: false, err });
-      console.log("result:", result);
+      // console.log("result:", result);
       if (!result) {
         return res.json({ success: false, err: "Wrong Password" });
       }

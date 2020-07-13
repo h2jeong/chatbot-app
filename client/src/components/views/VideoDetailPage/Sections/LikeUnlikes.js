@@ -17,8 +17,8 @@ function LikeDislikes(props) {
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
 
-  const countVariable = videoId ? { videoId } : { commentId };
   useEffect(() => {
+    const countVariable = videoId ? { videoId } : { commentId };
     // 수량 체크
     axios.post("/api/like/getLikes", countVariable).then(res => {
       if (res.data.success) {
@@ -118,7 +118,7 @@ function LikeDislikes(props) {
         </Tooltip>
         <span className="comment-action">{likes}</span>
       </span>
-      <span key="comment-basic-dislike">
+      <span key="comment-basic-dislike" style={{ margin: "0 0.5rem" }}>
         <Tooltip title="Dislike">
           {React.createElement(
             action === "disliked" ? DislikeFilled : DislikeOutlined,

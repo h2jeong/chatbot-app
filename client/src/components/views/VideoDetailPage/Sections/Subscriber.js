@@ -34,7 +34,7 @@ function Subscriber(props) {
 
     axios.post("/api/subscribe/isSubscribed", variable).then(res => {
       if (res.data.success) {
-        console.log(res.data);
+        // console.log(res.data);
         setIsSubscribe(true);
       } else {
         // message.error("Failed to subscribe");
@@ -45,7 +45,7 @@ function Subscriber(props) {
     if (!IsSubscribe) {
       axios.post("/api/subscribe/onSubscribe", variable).then(res => {
         if (res.data.success) {
-          console.log(res.data);
+          // console.log(res.data);
           setIsSubscribe(!IsSubscribe);
           setSubscribedCount(SubscribedCount + 1);
         } else {
@@ -55,7 +55,7 @@ function Subscriber(props) {
     } else {
       axios.post("/api/subscribe/Unsubscribe", variable).then(res => {
         if (res.data.success) {
-          console.log(res.data);
+          // console.log(res.data);
           setIsSubscribe(!IsSubscribe);
           setSubscribedCount(SubscribedCount - 1);
         } else {
